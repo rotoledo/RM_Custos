@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:br='http://www.totvs.com.br/br/'>
+	<soapenv:Header/>
+	<soapenv:Body>
+		<br:ReadRecordAuth>
+			<br:DataServerName>GchPacienteData</br:DataServerName>
+			<br:PrimaryKey>1;1;100630</br:PrimaryKey>
+			<br:Contexto>CODCOLIGADA=1;CODSISTEMA=0;CODUSUARIO=mestre</br:Contexto>
+			<br:Usuario>mestre</br:Usuario>
+			<br:Senha>totvs</br:Senha>
+		</br:ReadRecordAuth>
+	</soapenv:Body>
+</soapenv:Envelope>

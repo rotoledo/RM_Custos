@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -11,6 +12,7 @@ namespace RM_Custos
 	public class UnitTest1
 	{
 
+		//public string Envelope = File.ReadAllText(@".\RequestEnvelope.xml");
 		public string Envelope = @"<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:br='http://www.totvs.com.br/br/'>
 			   <soapenv:Header/>
 			   <soapenv:Body>
@@ -28,8 +30,11 @@ namespace RM_Custos
 		public async void Test01()
 		{
 			// GIVEN
+
+			var xxx = new StringContent(Envelope, Encoding.UTF8, "");
+
 			StringContent content = new StringContent(Envelope, Encoding.UTF8, "text/xml");
-			HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "http://10.51.5.196/totvsbusinessconnect/wsDataServer.asmx");
+			HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "http://10.51.2.133/totvsbusinessconnect/wsDataServer.asmx");
 			request.Headers.Add("soapaction", "http://www.totvs.com.br/br/ReadRecordAuth");
 			request.Content = content;
 
@@ -37,19 +42,25 @@ namespace RM_Custos
 			HttpClient client = new HttpClient();
 			HttpResponseMessage response = await client.SendAsync(request);
 			string result = response.Content.ReadAsStringAsync().Result;
-			
+
 
 
 			XmlDocument xmlDocument = new XmlDocument();
 			xmlDocument.LoadXml(result);
-			xmlDocument.GetElementsByTagName("ReadRecordAuthResult");
 			XmlNodeList list = xmlDocument.GetElementsByTagName("ReadRecordAuthResult");
 			XmlNode node = list.Item(0);
 			string ReadRecordAuthResult = node.InnerText;
 
+			xmlDocument.LoadXml(ReadRecordAuthResult);
+			list = xmlDocument.GetElementsByTagName("SZ0Paciente");
+			node = list.Item(0);
+			string gchPaciente = node.OuterXml;
+
+
+
 			// THEN
 			Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-			Assert.Contains("CLARICE PINTO", result);
+			//Assert.Contains("CLARICE PINTO", result);
 		}
 
 
